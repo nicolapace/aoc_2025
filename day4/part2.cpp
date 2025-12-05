@@ -33,28 +33,27 @@ long cleanup_neighbors_return_num_removed(vector<vector<uint8_t>>& matrix, vecto
                     removed += 1;
                     matrix_copy[i][j] = 0;
                     char_matrix[i][j] = ".";
-                    std::cout << 'X';
+                    cout << 'X';
                 } else {
-                    std::cout << char_matrix[i][j];
+                    cout << char_matrix[i][j];
                 }
             } else {
-                std::cout << char_matrix[i][j];
+                cout << char_matrix[i][j];
             }
         }
-        std::cout << std::endl;
+        cout << endl;
     }
     matrix = matrix_copy;
     return removed;
 }
 
 int main() {
-	std::string line;
-
-	std::ifstream MyReadFile("input.txt");
+	string line;
+	ifstream input_file("input.txt");
 	long total {};
     vector<vector<uint8_t>> matrix;
     vector<vector<string>> char_matrix;
-	while (std::getline (MyReadFile, line)) {
+	while (getline(input_file, line)) {
         vector<uint8_t> row;
         vector<string> char_row;
         for ( auto c : line ) {
@@ -65,14 +64,14 @@ int main() {
                 row.push_back(0);
                 char_row.push_back(".");
             } else {
-                throw std::runtime_error("Unexpected character in input");
+                throw runtime_error("Unexpected character in input");
             }
         }
         matrix.push_back(row);
         char_matrix.push_back(char_row);
 	}
 	// Close the file
-	MyReadFile.close();
+	input_file.close();
 
     while (true) {
         long removed = cleanup_neighbors_return_num_removed(matrix, char_matrix);
@@ -80,10 +79,7 @@ int main() {
             break;
         }
         total += removed;
-        std::cout << "---- Removed this round: " << removed << " Total removed: " << total << " ----" << std::endl;
+        cout << "---- Removed this round: " << removed << " Total removed: " << total << " ----" << endl;
     }
-    
-
-	std::cout << "Total: " << total << std::endl;
-
+	cout << "Total: " << total << endl;
 }

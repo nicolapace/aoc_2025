@@ -8,11 +8,10 @@ using namespace std;
 static constexpr int SIZE = 12;
 
 int main() {
-	std::string line;
-
-	std::ifstream MyReadFile("input.txt");
+	string line;
+	ifstream input_file("input.txt");
 	long total {};
-	while (std::getline (MyReadFile, line)) {
+	while (getline(input_file, line)) {
        
         int i = SIZE-1;
         while (i>=0){
@@ -36,8 +35,7 @@ int main() {
         }
         
 	}
-	std::cout << "Total: " << total << std::endl;
-
 	// Close the file
-	MyReadFile.close();
+	input_file.close();
+	cout << "Total: " << total << endl;
 }

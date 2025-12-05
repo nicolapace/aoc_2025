@@ -2,37 +2,39 @@
 #include <fstream>
 #include <cmath>
 
-std::pair<std::string, std::string> parse_pair(const std::string &pair_str) {
+using namespace std;
+
+pair<string, string> parse_pair(const string &pair_str) {
     size_t split_idx = pair_str.find('-');
-    std::string first = pair_str.substr(0, split_idx);
-    std::string second = pair_str.substr(split_idx + 1);
-    // std::cout << "Parsed pair: " << first << ", " << second << std::endl;
+    string first = pair_str.substr(0, split_idx);
+    string second = pair_str.substr(split_idx + 1);
+    // cout << "Parsed pair: " << first << ", " << second << endl;
     return {first, second};
 }
 
 long generate_next_mirrored(long number) {
-    std::string num_str = std::to_string(number); 
+    string num_str = to_string(number); 
     long len = num_str.length(); // should be always even
-    std::string first_half = num_str.substr(0, (len + 1) / 2);
-    std::string second_half = num_str.substr((len + 1) / 2);
+    string first_half = num_str.substr(0, (len + 1) / 2);
+    string second_half = num_str.substr((len + 1) / 2);
         
     // std::reverse(rev_part.begin(), rev_part.end());
-    if (std::stol(first_half) > std::stol(second_half)) {
-        std::string palindrome {first_half};
+    if (stol(first_half) > stol(second_half)) {
+        string palindrome {first_half};
         palindrome += first_half;
-        return std::stol(palindrome);
+        return stol(palindrome);
     }
     
-    long next_palindrome_part_long = std::stol(first_half) + 1;
-    first_half = std::to_string(next_palindrome_part_long);
-    std::string next_palindrome = std::to_string(next_palindrome_part_long);
+    long next_palindrome_part_long = stol(first_half) + 1;
+    first_half = to_string(next_palindrome_part_long);
+    string next_palindrome = to_string(next_palindrome_part_long);
     next_palindrome += first_half;
 
-    return std::stol(next_palindrome);
+    return stol(next_palindrome);
 }
 
 bool is_mirrored(const long &number) {
-    std::string num_str = std::to_string(number);
+    string num_str = to_string(number);
     long len = num_str.length();
     for (long i = 0; i < len / 2; ++i) {
         if (num_str[i] != num_str[len/2 + i]) {
@@ -42,20 +44,20 @@ bool is_mirrored(const long &number) {
     return true;
 }
 
-long count_fake_ids(const std::string &first, const std::string &second) {
-    long start = std::stol(first);
-    long end = std::stol(second);
+long count_fake_ids(const string &first, const string &second) {
+    long start = stol(first);
+    long end = stol(second);
 
     long fake_id_count = 0;
 
     if (first.length() % 2 == 1) {
-        start = std::pow(10, first.length());
+        start = pow(10, first.length());
     }
     
     while (start <= end)
     {
         if (is_mirrored(start)) {
-            std::cout << "Found mirrored: " << start << std::endl;
+            cout << "Found mirrored: " << start << endl;
             fake_id_count+=start;
         }
         start = generate_next_mirrored(start);
@@ -65,32 +67,30 @@ long count_fake_ids(const std::string &first, const std::string &second) {
 }
 
 int main() {
-	std::string myText;
+	string line;
+	ifstream input_file("input.txt");
 
-	std::ifstream MyReadFile("input.txt");
-
-    std::vector<std::pair<std::string, std::string>> pairs;
-    while (std::getline(MyReadFile, myText)) {
+    vector<pair<string, string>> pairs;
+    while (getline(input_file, line)) {
         size_t start = 0;
         size_t pos;
-        while ((pos = myText.find(',', start)) != std::string::npos) {
-            auto pair = myText.substr(start, pos - start);
+        while ((pos = line.find(',', start)) != string::npos) {
+            auto pair = line.substr(start, pos - start);
             pairs.push_back(parse_pair(pair));
             start = pos + 1;
         }
         // push the final token (or whole line if no comma)
-        auto pair = myText.substr(start);
+        auto pair = line.substr(start);
         pairs.push_back(parse_pair(pair));
     }
 	// Close the file
-	MyReadFile.close();
+	input_file.close();
 
     long fake_ids = 0;
     for(auto &p : pairs) {
-        std::cout << "Counting fake IDs for range: " << p.first << " - " << p.second << std::endl;
+        cout << "Counting fake IDs for range: " << p.first << " - " << p.second << endl;
         fake_ids += count_fake_ids(p.first, p.second);
     }
 
-    std::cout << "Total fake IDs: " << fake_ids << std::endl;
-
+    cout << "Total fake IDs: " << fake_ids << endl;
 }
