@@ -6,11 +6,11 @@
 
 using namespace std;
 
-std::pair<long, long> parse_pair(const std::string &pair_str) {
+pair<long, long> parse_pair(const string &pair_str) {
     size_t split_idx = pair_str.find('-');
-    long first = std::stol(pair_str.substr(0, split_idx));
-    long second = std::stol(pair_str.substr(split_idx + 1));
-    // std::cout << "Parsed pair: " << first << ", " << second << std::endl;
+    long first = stol(pair_str.substr(0, split_idx));
+    long second = stol(pair_str.substr(split_idx + 1));
+    // cout << "Parsed pair: " << first << ", " << second << endl;
     return {first, second};
 }
 
@@ -28,28 +28,27 @@ int binary_search_bound(const vector<pair<long, long>> &db, const long &value) {
     return left;
 }
 
-
 int main() {
-	std::string line;
+	string line;
 
-	std::ifstream MyReadFile("input.txt");
+	ifstream input_file("input.txt");
 	long total {};
     
     vector<pair<long, long>> db{};
     // fill db
-    while (std::getline(MyReadFile, line)) {
+    while (getline(input_file, line)) {
         if (line.length() == 0) {
             break;
         }
         auto range = parse_pair(line);
         db.push_back(range);
     }
-    std::sort(db.begin(), db.end(), [](const auto& a, const auto& b) {
+    sort(db.begin(), db.end(), [](const auto& a, const auto& b) {
         return a.first < b.first;
     });
 
     // check ingredients
-    while (std::getline (MyReadFile, line)) {
+    while (getline(input_file, line)) {
         auto ingedient = stol(line);
         //binary search the first element that is >= ingedient
         int i = 0;
@@ -64,9 +63,7 @@ int main() {
         }
 
 	}
+	input_file.close();
 
-	std::cout << "Total: " << total << std::endl;
-	// Close the file
-	MyReadFile.close();
-
+	cout << "Total: " << total << endl;
 }
