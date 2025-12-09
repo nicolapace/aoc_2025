@@ -8,8 +8,8 @@
 using namespace std;
 
 int main() {
-	std::string line;
-	std::ifstream input_file("input.txt");
+	string line;
+	ifstream input_file("input.txt");
     
     vector<vector<string>> matrix{};
 
