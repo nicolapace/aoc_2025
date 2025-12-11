@@ -13,6 +13,7 @@ struct Position {
     long y;
     long z;
 };
+
 class Distance
 {
     public:
@@ -47,8 +48,6 @@ string pos2str(const Position& pos) {
     return to_string(pos.x) + "," + to_string(pos.y) + "," + to_string(pos.z);
 }
 
-
-
 int main() {
 	string line;
 	ifstream input_file("input.txt");
@@ -67,7 +66,7 @@ int main() {
 	input_file.close();
 
 
-    priority_queue<Distance, vector<Distance>, greater<Distance>> minHeap; // Min-heap
+    priority_queue<Distance, vector<Distance>, greater<Distance>> min_heap; // Min-heap
 
     int i = 0;
     while( i < positions.size() ) {
@@ -75,7 +74,7 @@ int main() {
         while( j < positions.size() ) {
             if ( i != j ) {
                 long dist = distance(positions[i], positions[j]);
-                minHeap.push(Distance(positions[i], positions[j], dist));
+                min_heap.push(Distance(positions[i], positions[j], dist));
             }
             j++;
         }
@@ -87,8 +86,8 @@ int main() {
     int num_nearest = 1000;
     while (num_nearest>0)
     {
-        Distance min_dist = minHeap.top();
-        minHeap.pop();
+        Distance min_dist = min_heap.top();
+        min_heap.pop();
         string pos1_str = pos2str(min_dist.pos1);
         string pos2_str = pos2str(min_dist.pos2);
 
